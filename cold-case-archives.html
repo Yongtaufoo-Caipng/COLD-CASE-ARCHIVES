@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171511">
+<meta name="description" content="Four interactive forensic genetics investigations. Follow the evidence and discover sixteen possible endings.">
+<title>The Cold Case Archives</title>
+<style>
+:root{color-scheme:dark;--ink:#171511;--panel:#201c16;--paper:#f2e5cb;--muted:#c0ae91;--gold:#e2b971;--line:#554631;--rust:#eea28c;--green:#bdd2a5;--mono:ui-monospace,Menlo,Consolas,monospace;--serif:Georgia,'Times New Roman',serif}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 65% 0%,#31251a 0%,transparent 65%),var(--ink);color:var(--paper);font:1rem/1.58 system-ui,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath d='M0 0h180v180H0z' filter='url(%23n)' opacity='.26'/%3E%3C/svg%3E");opacity:.19;z-index:4}
+button,a{font:inherit}
+button{cursor:pointer;color:inherit;border:1px solid var(--line);background:#231e17;padding:.63rem .9rem;border-radius:2px}
+button:hover{background:#382c1e;border-color:var(--gold)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+a{color:var(--gold);text-underline-offset:3px}
+button[aria-current="page"],button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+h1,h2,h3,p,figure{margin:0}
+h1,h2,h3{font-family:var(--serif);font-weight:normal;line-height:1.08}
+h1[tabindex="-1"]:focus{outline:none}
+p+p{margin-top:.65rem}
+.shell{width:min(1200px,calc(100% - 72px));margin-inline:auto}
+.top{border-bottom:1px solid var(--line);background:#171410e8}
+.top .shell{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:70px;padding-block:.55rem}
+.brand{display:flex;align-items:center;gap:.75rem;text-align:left;background:none;border-color:transparent;padding:.2rem 0;font:1rem var(--serif)}
+.brand strong{font-weight:normal}
+.sigil{display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--gold);color:var(--gold);font:1.3rem var(--serif);transform:rotate(-5deg)}
+.nav,.actions{display:flex;flex-wrap:wrap;gap:.55rem}
+.nav button,.mini,.label,.case-meta,.chapter,.key,.badge,.footer,.hero-notes,.case-link,.evidence strong{font: .73rem/1.45 var(--mono);letter-spacing:.105em;text-transform:uppercase}
+.nav button{padding:.5rem .7rem}
+.label,.chapter,.case-link,.evidence strong{color:var(--gold)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;position:relative;min-height:385px;margin-top:28px;padding:32px 36px 36px;border:1px solid var(--line);background:linear-gradient(110deg,#1d1812 30%,#342619);overflow:hidden;isolation:isolate}
+.hero::after{content:"";position:absolute;inset:7px;border:1px solid #7d644432;pointer-events:none;z-index:-1}
+.hero h1{font-size:clamp(3rem,7.4vw,6.4rem);letter-spacing:-.065em;margin:.48rem 0 .9rem}
+.hero h1 em{color:var(--gold);font-weight:normal}
+.hero p{max-width:36ch;color:var(--muted);font-size:1.04rem}
+.hero-notes{display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;margin-top:1.35rem;color:var(--gold)}
+.hero-art{position:relative;display:grid;place-items:center;color:var(--gold);height:100%;min-height:235px}
+.hero-art svg{width:min(100%,395px);height:auto}
+.art-caption{position:absolute;bottom:-6px;right:0;color:var(--muted);font:.64rem var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin:1.65rem 0 .85rem}
+.section-head h2{font-size:2rem;margin-top:.2rem}
+.muted,.case-meta{color:var(--muted)}
+.case-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.case-card{display:flex;flex-direction:column;text-align:left;padding:16px;background:linear-gradient(145deg,#292116,#1e1a14);min-width:0}
+.case-card .card-top{display:flex;align-items:center;justify-content:space-between;color:var(--gold)}
+.card-top svg{width:46px;height:46px;padding:8px;border:1px solid var(--line)}
+.case-card h3{font-size:1.53rem;margin:.75rem 0 .42rem}
+.case-card .case-meta{letter-spacing:.04em;text-transform:none}
+.case-link{margin-top:auto;padding-top:1rem}
+.footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;border-top:1px solid var(--line);margin-top:1.6rem;padding:1rem 0 1.3rem;color:var(--muted);letter-spacing:.045em;text-transform:none}
+.desk{max-width:940px;margin:0 auto;padding-top:1.65rem}
+.desk-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.55rem;margin-bottom:1rem}
+.steps{display:flex;gap:5px;list-style:none;margin:0;padding:0}
+.steps li{width:35px;height:5px;background:var(--line)}
+.steps .past{background:#ad8752}
+.steps .current{background:var(--gold)}
+.sheet{border:1px solid var(--line);padding:clamp(1.15rem,4vw,2.5rem);background:linear-gradient(145deg,#272016,#1e1a14);box-shadow:0 16px 40px #0d0a0780}
+.sheet h1{font-size:clamp(2.2rem,5.6vw,4.2rem);letter-spacing:-.045em;margin:.4rem 0 1rem}
+.sheet h2{font-size:1.55rem;margin:.8rem 0 .55rem}
+.sheet p{max-width:70ch}
+.cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:.65rem;margin:1.1rem 0}
+.cast div{border:1px solid var(--line);padding:.75rem}
+.cast strong{display:block;font:1.15rem var(--serif)}
+.cast span{color:var(--muted);font-size:.85rem}
+.quote{border-left:2px solid var(--gold);margin:.9rem 0;padding:.48rem 0 .48rem .95rem}
+.quote blockquote{font:italic 1.22rem/1.42 var(--serif);margin:.3rem 0 0}
+.evidence{border:1px solid #776145;background:#35291b;padding:.67rem .85rem;margin:.8rem 0 1rem}
+.evidence strong{display:block;margin-bottom:.16rem}
+.decision{font-weight:650;margin:.6rem 0}
+.choices{display:grid;gap:.55rem}
+.choice{display:grid;grid-template-columns:1.9rem 1fr;align-items:center;gap:.55rem;text-align:left;min-height:49px}
+kbd{font: .75rem var(--mono);border:1px solid var(--line);padding:.27rem .38rem;border-radius:3px;color:var(--gold);text-align:center}
+.primary{background:var(--gold);border-color:var(--gold);color:#20170e;font-weight:700}
+.primary:hover{background:#f3cc8e;color:#20170e}
+.actions{margin-top:1.1rem}
+.badge{display:inline-block;border:1px solid currentColor;color:var(--gold);padding:.25rem .5rem}
+.badge.alt{color:var(--rust)}
+.badge.good{color:var(--green)}
+.debrief{border-top:1px solid var(--line);margin-top:1.2rem;padding-top:.45rem}
+.debrief h2{color:var(--gold)}
+.debrief p{font-size:.97em}
+.debrief ul{padding-left:1.2rem;margin:.45rem 0}
+details{border-top:1px solid var(--line);margin-top:.9rem;padding-top:.7rem}
+summary{cursor:pointer;color:var(--gold)}
+.trace{padding-left:1.25rem}
+.trace li{padding:.18rem 0}
+.archive-group{margin-top:1.35rem}
+.archive-group h2{margin-bottom:.7rem}
+.archive-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+.archive-item{display:flex;flex-direction:column;gap:.2rem;text-align:left;padding:.65rem .8rem;border:1px solid var(--line)}
+.locked{color:var(--muted);border-style:dashed}
+.reel{display:flex;flex-wrap:wrap;gap:.6rem;margin:.7rem 0}
+.reel span{border:1px solid var(--line);padding:.45rem .7rem}
+dialog{color:var(--paper);background:var(--panel);border:1px solid var(--gold);width:min(480px,calc(100% - 28px));padding:1.4rem}
+dialog::backdrop{background:#0c0907c9}
+dialog h2{font-size:1.8rem;margin-bottom:.65rem}
+.presentation .desk{max-width:1050px}
+.presentation .sheet{font-size:1.16rem}
+.presentation .quote blockquote{font-size:1.42rem}
+.presentation .choice{min-height:56px}
+.presentation .top .shell{min-height:60px}
+@media(max-width:920px){.case-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{min-height:330px;padding:24px}.shell{width:calc(100% - 38px)}}
+@media(max-width:620px){.shell{width:calc(100% - 24px)}.top .shell{align-items:flex-start;flex-direction:column;gap:.5rem}.hero{grid-template-columns:1fr;padding:22px;min-height:0;margin-top:15px}.hero-art{position:absolute;right:-28%;top:0;width:79%;opacity:.23;z-index:-1}.art-caption{display:none}.hero p{font-size:.97rem}.section-head{align-items:start;flex-direction:column;gap:.25rem}.case-card{padding:12px}.case-card h3{font-size:1.25rem}.case-meta{overflow-wrap:anywhere}.archive-grid{grid-template-columns:1fr}.desk{padding-top:1rem}.steps li{width:22px}}
+@media print{body{color:#111;background:white}body::before,.top,.footer,.actions,.choices{display:none}.sheet,.evidence{background:white;color:#111;border-color:#999;box-shadow:none}.label,.badge,.debrief h2,.evidence strong,.muted,a{color:#333}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="shell">
+    <button class="brand" data-action="files" aria-label="The Cold Case Archives, case files"><span class="sigil" aria-hidden="true">⌘</span><strong>The Cold Case Archives</strong></button>
+    <nav class="nav" aria-label="Main navigation">
+      <button id="nav-files" data-action="files">Case files</button>
+      <button id="nav-archive" data-action="archive">Archive <span id="count"></span></button>
+      <button id="nav-present" data-action="present">Presenter</button>
+    </nav>
+  </div>
+</header>
+<main id="main" class="shell"></main>
+<footer class="shell footer"><span>Forensic genetics anthology &nbsp;·&nbsp; Offline edition</span><span>During a case, press <kbd>1</kbd> or <kbd>2</kbd> to choose.</span></footer>
+<dialog id="confirm" aria-labelledby="confirm-title" aria-describedby="confirm-text">
+  <form method="dialog">
+    <h2 id="confirm-title">Reset archive?</h2>
+    <p id="confirm-text"></p>
+    <div class="actions"><button value="cancel" autofocus>Cancel</button><button class="primary" value="confirm">Reset</button></div>
+  </form>
+</dialog>
+<dialog id="presenter" aria-labelledby="presenter-title">
+  <h2 id="presenter-title">Presenter desk</h2>
+  <p>Plan one route per case, with roughly three minutes per case and three minutes for transitions and discussion.</p>
+  <div class="reel"><span>0:00–12:00 · Four cases</span><span>12:00–15:00 · Debrief</span></div>
+  <p>Use <kbd>1</kbd> and <kbd>2</kbd> to select a decision. Use <kbd>B</kbd> to rewind one scene. Rewinding keeps discovered endings in the archive.</p>
+  <p id="present-status" role="status" class="muted"></p>
+  <div class="actions">
+    <button id="projector-toggle" data-action="projector" aria-pressed="false">Larger text</button>
+    <button id="full-toggle" data-action="fullscreen">Full screen</button>
+    <button data-action="reset-all">Reset all</button>
+    <form method="dialog"><button class="primary" autofocus>Done</button></form>
+  </div>
+</dialog>
+<noscript>Enable JavaScript in your browser to play The Cold Case Archives.</noscript>
+<script>
+const cases = [
+  {
+    title: "The Shadow of California", region: "California · 2018 inspired", method: "Investigative genetic genealogy", model: "Golden State Killer investigation",
+    intro: "A decades-old crime-scene sample finally yields a searchable DNA profile. The genealogy results arrive just as the press asks for a name. You lead the cold-case review.",
+    cast: [["Mara Vale","Cold-case genealogist"],["Eli Chen","DNA analyst"],["Jonah and Owen Rook","Two fictional relatives"]],
+    science: "Genealogy compares many SNPs, single-letter DNA variations, to find stretches shared with potential relatives. Records help turn those matches into a candidate. A direct DNA comparison using STRs, short tandem repeats, can test whether a reference sample and the crime-scene profile share a source. Other evidence is needed to interpret how the DNA got there.",
+    history: "Investigative genetic genealogy helped lead California investigators to Joseph James DeAngelo in 2018. Investigators compared DNA collected from discarded material with crime-scene evidence. In 2020 he pleaded guilty to 13 murders and was sentenced to life without parole.",
+    sources: [["National Institute of Justice · Investigation and confirmatory DNA","https://nij.ojp.gov/topics/articles/serial-killer-connections-through-cold-cases"],["Sacramento County District Attorney · Sentence","https://sacda.org/media/joseph-james-deangelo-jr-sentenced-to-11-consecutive-life-terms-without-the-possibility-of-parole-for-13-murders-and-an-additional-consecutive-life-term-for-13-kidnappings/"],["National Institute of Justice · Genetic genealogy methods","https://www.ojp.gov/library/publications/introduction-forensic-genetic-genealogy-technology-forensic-science-service"]],
+    prompt: "How far should a family match take you?",
+    scenes: {
+      start: ["The cousin list","Mara Vale","These shared segments point to an extended family. The database gives us relatives. The records might give us a person.","Two distant matches converge on the Rook family. Several relatives could fit.",[["Build both branches from original records","tree"],["Put the nearest visible relative on the lead sheet","name"]]],
+      tree: ["Two men on paper","Mara Vale","Jonah’s work records place him overseas. Owen was living close to two of the scenes.","Verified records narrow the lead to Owen. His reference DNA is still needed.",[["Obtain a lawful reference and compare STR profiles","match"],["Send the tree to prosecutors before collecting a reference","memo"]]],
+      name: ["The wrong doorstep","Eli Chen","Jonah is a cousin on the tree. A reporter is at his door. I still have the travel records if you want them.","The shortlist leaked. Owen has heard that police are asking about the family.",[["Correct the lead and verify both branches privately","repair"],["Stand by the shortlist and follow the public pressure","leak"]]],
+      match: ["The comparison","Eli Chen","Owen’s independently collected reference is consistent with the crime-scene profile. Check the statistics and the scene file together.","Independent records place Owen near two scenes. The analyst has documented the strength of the DNA comparison.",[["Submit the comparison and corroborating records","0"],["Hold the completed lab report and file the tree alone","2"]]],
+      memo: ["An unsigned warrant","Mara Vale","They sent our memo back. It contains a likely candidate and an unverified relative, and the names are both circulating.","No reference sample was obtained. Jonah’s name is already public.",[["Endorse the public accusation against Jonah","1"],["Withdraw the memo and retain Owen as an unconfirmed lead","2"]]],
+      repair: ["A narrow window","Eli Chen","The corrected records led to Owen. The reference comparison is ready, but the rumor has already reached him.","The lab supports the comparison. The old lead sheet needs a formal correction.",[["Correct the record and submit the corroborated case","0"],["Wait for the press to move on before acting on the confirmed lead","3"]]],
+      leak: ["An empty address","Mara Vale","Owen has moved and we have no reference. Jonah’s employer is asking if the headlines are true.","The lead sheet still names Jonah. Investigators have lost track of Owen.",[["Declare Jonah the offender on the leaked lead","1"],["Withdraw the accusation after the trail has gone cold","3"]]]
+    },
+    endings: [
+      ["The Family Tree Speaks","The file advances on the strength of the documented DNA comparison and independent records. Jonah is cleared from the lead sheet."],
+      ["The Wrong Branch","Jonah, an innocent fictional relative, is publicly accused. The family connection was real. The inference about who left the DNA was wrong."],
+      ["A Name Without Proof","The case stalls at review. The submitted file has a candidate’s name and a family tree, with no direct comparison in the record."],
+      ["The Vanishing Shadow","The actual offender slips out of reach in this fictional timeline. Investigators lose the opportunity to act while the lead is still fresh."]
+    ]
+  },
+  {
+    title: "The Bodies in the Woods", region: "New Hampshire · 1985–2025 inspired", method: "Degraded DNA and victim identification", model: "Bear Brook murders",
+    intro: "Several sets of remains have been found in woodland containers. One child is still known only by an exhibit number. A specialist lab offers to examine the tiny sample that remains.",
+    cast: [["Dr. Inez Bell","Forensic anthropologist"],["Noor Ward","Ancient-DNA specialist"],["Sam Lin","Family liaison"]],
+    science: "Degradation breaks DNA into shorter fragments. A conventional STR assay can lose signals when its target regions are too long for the surviving fragments. A validated sequencing method designed for short fragments may recover useful nuclear markers. Mitochondrial DNA can survive when nuclear typing struggles, but maternal relatives can share a mitochondrial profile. Corroborate any proposed identity and reserve material where feasible.",
+    history: "Four victims were recovered in Allenstown in 1985 and 2000. Marlyse Elizabeth Honeychurch and her daughters Marie Elizabeth Vaughn and Sarah Lynn McWaters were identified in 2019. In September 2025, New Hampshire announced that the final child was Rea Rasmussen, a daughter of Terry Rasmussen, following extensive genetic genealogy work.",
+    sources: [["DNA Doe Project · Bear Brook case","https://dnadoeproject.org/case/bear-brook-jane-doe-2000/"],["New Hampshire Department of Justice · Identification announcement","https://ebs.publicnow.com/view/44B9DC0FFABF32448919DDA9CCD0DA888D45895F"],["National Institute of Justice · Identification and confirmation","https://nij.ojp.gov/media/audiofile/just-identifying-individuals-with-forensic-genetic-genealogy"]],
+    prompt: "What do you owe a family before you give them a name?",
+    scenes: {
+      start: ["Exhibit 04","Dr. Inez Bell","We have one tiny extract and a sealed reserve. The first assay lost several markers. Every new test costs material.","The quality check shows severe fragmentation. The child’s identity is still unknown.",[["Preserve the reserve and consult the specialist lab","consult"],["Prioritise the in-house assay and use the working extract","repeat"]]],
+      consult: ["A lead in the fragments","Noor Ward","Short-fragment sequencing gave us usable nuclear markers. The tree suggests a family. It could still be either of two girls.","The specialist used a small aliquot and kept the reserve sealed.",[["Seek a verified family reference and birth records","verify"],["Rely on the family tree and a shared maternal profile","maternal"]]],
+      repeat: ["A near-empty vial","Noor Ward","The repeat dropped the same markers and used the working extract. I can still work with the sealed reserve if you release a small amount.","Only the reserve remains. A missing-person file contains a plausible but untested lead.",[["Send a small reserve aliquot for specialist sequencing","salvage"],["Keep the sample in-house to meet the reporting deadline","deadline"]]],
+      verify: ["The family file","Sam Lin","The verified family comparison supports one branch. The birth and missing-person records fit the same child.","Independent records and the kinship analysis converge on a single identity.",[["Submit the evidence for formal identification and private notification","0"],["Defer review and return the file to storage","3"]]],
+      maternal: ["Two names in one line","Sam Lin","The maternal profile fits both girls. One family is expecting a call because they saw the age estimate in the news.","A shared maternal lineage cannot separate the two candidates.",[["Enter the first girl as a confirmed identification","2"],["Withhold a name and shelve the unresolved case","3"]]],
+      salvage: ["A second extraction","Noor Ward","The small aliquot was enough. The reference family data and records support one identity. There is still material for review.","A second conventional repeat would consume the reserve without answering a new question.",[["Submit the corroborated identification for review","0"],["Exhaust the reserve trying to force a complete conventional profile","1"]]],
+      deadline: ["The last reserve","Dr. Inez Bell","The deadline is tonight. You can keep the vial sealed or spend it on the same assay that failed twice.","The file has a possible name from age and location alone.",[["Run the old assay on the entire reserve","1"],["Assign the plausible name from the missing-person file","2"]]]
+    },
+    endings: [
+      ["Names Restored","The identification is formally accepted. The liaison can speak to the right family with a documented basis for the name."],
+      ["The Last Fragment","The last material is consumed without an interpretable result. This exhibit can no longer be retested."],
+      ["A False Identity","The wrong name is placed on the file. A family grieves on the basis of an unconfirmed inference and the child remains unidentified."],
+      ["The Forgotten Victims","Exhibit 04 goes back into storage with a viable line of inquiry still open. No family receives an answer."]
+    ]
+  },
+  {
+    title: "The Village That Lied", region: "Leicestershire · 1980s inspired", method: "DNA profiling and sample identity", model: "Colin Pitchfork investigation",
+    intro: "Two cases carry the same genetic pattern. A young man has confessed to one of them. In the station, the confession is already typed up when the lab report arrives.",
+    cast: [["Dr. Miriam Shaw","Forensic geneticist"],["Inspector Ruth Finch","Case officer"],["Evan Reed and Martin Bell","Fictional confessor and screening donor"]],
+    science: "The original case used minisatellite-based genetic profiling, which compared patterns of DNA fragments. Under the case’s evidence assumptions, the incompatible pattern excluded the confessor as the source. A comparison can accurately exclude the donor of a sample while saying nothing about the person named on its label if the donor’s identity was substituted.",
+    history: "Alec Jeffreys’s team linked biological evidence from the murders of Lynda Mann and Dawn Ashworth and excluded Richard Buckland, who had confessed to one murder. Colin Pitchfork had another man give a blood sample in his name. A fresh sample from Pitchfork matched the crime evidence, and he was convicted.",
+    sources: [["University of Leicester · History of genetic fingerprinting","https://le.ac.uk/dna-fingerprinting/history"],["U.S. National Library of Medicine · Pitchfork case","https://mainweb.awsprod.nlm.nih.gov/exhibition/visibleproofs/galleries/cases/jeffreys.html"]],
+    prompt: "Which is easier to verify, a DNA pattern or the name on its label?",
+    scenes: {
+      start: ["The signed confession","Dr. Miriam Shaw","The profiles from both scenes agree. Evan Reed’s verified sample gives a different pattern.","The scene profiles are interpretable and the repeat comparison excludes Evan as the source.",[["Reassess the confession and open a fresh screening inquiry","screen"],["Keep the confession at the centre of the inquiry","charge"]]],
+      screen: ["The donor ledger","Inspector Ruth Finch","The village screen gave no match. A colleague says Martin Bell paid him to stand in at collection.","The receipt lists Martin. The witness says the blood came from someone else.",[["Verify the tip and request a witnessed recollection","fresh"],["Accept the labelled tube as Martin’s verified exclusion","label"]]],
+      charge: ["The second statement","Inspector Ruth Finch","Evan has recanted. A clerk also flagged a screening donor whose signature looks wrong.","The prosecution memo is still waiting for your signature.",[["Suspend the referral and audit the screening samples","audit"],["Sign the referral and leave the screening records alone","court"]]],
+      fresh: ["The new fingerprint","Dr. Miriam Shaw","I watched the collector verify Martin’s identity. The new sample matches the pattern from both scenes.","The first tube can now be investigated as a substitute. Evan’s exclusion stands.",[["Document both comparisons and correct the case file","0"],["Reject the new comparison and let the old exclusion stand","2"]]],
+      label: ["A cleared name","Dr. Miriam Shaw","The sample on the ledger is excluded. We still have no reliable evidence of who gave it.","The tip was never checked. Martin is leaving the area.",[["Close the screening inquiry on the original exclusions","2"],["Withdraw the exclusion and leave the case open pending verification","3"]]],
+      audit: ["The collection breach","Inspector Ruth Finch","The audit verified the substitution. A witnessed fresh draw from Martin matches both cases.","The packet now contains the original exclusion and the authenticated match.",[["Replace the referral with the verified case against Martin","0"],["Keep the referral against Evan despite both results","1"]]],
+      court: ["The final signature","Dr. Miriam Shaw","The lab cannot support the referral against Evan. The disputed donor receipt is still on your desk.","No verified sample from Martin was collected.",[["Prosecute Evan on the confession","1"],["Withdraw the referral and reopen the unresolved file","3"]]]
+    },
+    endings: [
+      ["The Witnessed Sample","Evan’s exclusion is recorded and the authenticated comparison redirects the case to the actual offender."],
+      ["The Wrong Man in the Dock","Evan, a fictional stand-in for the historical confessor, is wrongfully prosecuted. The verified exclusion was available before the referral."],
+      ["The Borrowed Alibi","The substitute sample protects the actual offender, who leaves before the screening result is challenged."],
+      ["The Open Ledger","The innocent confessor is spared prosecution, but the screening programme never establishes who provided the disputed sample."]
+    ]
+  },
+  {
+    title: "The Phantom’s DNA", region: "Central Europe · 2000s inspired", method: "Consumable contamination", model: "Phantom of Heilbronn investigation",
+    intro: "A recurring DNA profile seems to connect a string of unrelated scenes. Investigators pin the sites to a map. The lab manager pins something else beside it: a box label.",
+    cast: [["Lea Vogel","Quality manager"],["Anton Weiss","Cross-border liaison"],["Marta Falk","Fictional packaging worker"]],
+    science: "Sterility addresses viable microorganisms. Detectable human DNA can still be present. Testing unused swabs from the suspect lot can expose contamination introduced before collection, while clean process controls and a comparison lot help localise the source. The same profile at several scenes can reflect shared supplies rather than a shared offender.",
+    history: "Investigators in Europe linked unrelated crime scenes through a recurring profile. In 2009 the apparent link was traced to swabs contaminated during manufacture. The DNA was attributed to a packaging worker. The contaminated profile did not solve the crimes it appeared to connect.",
+    sources: [["NIST · Forensic DNA interpretation and human factors","https://nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8503.pdf"],["ISO · The Phantom of Heilbronn","https://www.iso.org/news/2016/07/Ref2094.html"]],
+    prompt: "Where did the matching DNA first enter the evidence chain?",
+    scenes: {
+      start: ["One profile, many scenes","Lea Vogel","Different teams collected the samples. Their supply invoices point to the same manufacturer.","A swab lot appears on several collection logs. No independent evidence links the scenes.",[["Compare lot logs and test sealed unused swabs with controls","lot"],["Treat the repeated profile as a cross-border suspect lead","chase"]]],
+      lot: ["The swab that stayed sealed","Lea Vogel","The unused swabs carry the recurring profile. The comparison lot and process blanks are clean.","The suspect swabs never visited a scene. Collection records identify which files used the lot.",[["Quarantine the lot and map affected cases","scope"],["Treat it as a local anomaly and keep the scene links","ignore"]]],
+      chase: ["The factory address","Anton Weiss","Marta Falk’s verified reference fits the recurring profile. Her work log puts her on the swab packaging line.","The comparison supports Marta as the DNA source. Her role gives the DNA another route into evidence.",[["Pause the suspect search and test unopened stock","pause"],["Keep Marta under suspicion based on the scene comparisons","pursue"]]],
+      scope: ["The correction notice","Lea Vogel","We know which kits were affected. Some retained exhibits can be sampled again with independently checked supplies.","The shared profile appeared on unopened swabs. Partner teams still rely on the original link.",[["Notify all teams, retract the link and retest suitable exhibits","0"],["Discard affected exhibits before checking what can be retested","3"]]],
+      ignore: ["A map in ink","Anton Weiss","The link has already gone into the joint bulletin. We can still retract it and review the kits.","The same profile was found on unused swabs. Some original exhibits are still available.",[["Leave the joint bulletin active","2"],["Destroy the affected evidence to close the incident quickly","3"]]],
+      pause: ["The route into the kit","Lea Vogel","Sealed stock from the suspect lot contains the profile. Clean controls support contamination before scene collection.","The lot logs connect the scenes to a supply chain. The worker’s presence at any scene is unsubstantiated.",[["Withdraw the suspect lead and launch the lot review","0"],["Use the contaminated comparisons to accuse Marta anyway","1"]]],
+      pursue: ["A warrant on the desk","Anton Weiss","We have a profile comparison and no other link to Marta. The packaging records were never tested against unused swabs.","The prosecutor wants to know whether the evidence can place Marta at a scene.",[["Recommend charging Marta based on the profile alone","1"],["Drop the charge but keep the phantom task force active","2"]]]
+    },
+    endings: [
+      ["The Phantom Dissolves","The false link is withdrawn. Investigators review the affected files and return to independent evidence for each crime."],
+      ["The Wrong Woman","Marta, a fictional packaging worker, is falsely accused. Her DNA reached the kits during manufacture."],
+      ["A Task Force for a Ghost","Investigators keep chasing a single offender. Real cases lose time because a shared supplier is treated as a shared suspect."],
+      ["Evidence in the Bin","Usable retained material is destroyed during the response. Opportunities to recover independent scene profiles are lost."]
+    ]
+  }
+];
+
+const diagrams = [
+  '<path d="M16 7v7M6 21v-7h20v7"/><circle cx="16" cy="5" r="3"/><rect x="3" y="21" width="6" height="6"/><rect x="23" y="21" width="6" height="6"/><path d="M16 14v7"/><circle cx="16" cy="24" r="3"/>',
+  '<path d="M10 5h12M12 5v6l-5 12a3 3 0 0 0 3 4h12a3 3 0 0 0 3-4l-5-12V5M10 19h12"/><path d="M14 22h1m3 2h2"/>',
+  '<rect x="5" y="4" width="22" height="24"/><path d="M16 4v24M8 9h5m6 0h5M8 13h5m6 2h5M8 19h5m6 0h5M8 24h5m6 0h5"/>',
+  '<path d="m8 24 12-12m-2-2 4 4 5-5c2-2-2-6-4-4zM7 25l-2 2M4 8h7M7.5 4.5v7M23 24h6m-3-3v6"/>'
+];
+const stamps = ["I","II","III","IV"];
+const saveKey = "coldCaseArchives.discovery.v1";
+const main = document.querySelector("#main");
+const confirmBox = document.querySelector("#confirm");
+const presenter = document.querySelector("#presenter");
+let discovered = readArchive();
+let view = "files";
+let run = null;
+let exhibit = null;
+let resetTarget = "";
+
+function readArchive() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(saveKey) || "{}");
+    const clean = {};
+    cases.forEach((file, index) => file.endings.forEach((ending, outcome) => {
+      const key = `${index}-${outcome}`;
+      if (Object.hasOwn(saved || {}, key)) clean[key] = true;
+    }));
+    return clean;
+  } catch {
+    return {};
+  }
+}
+
+function saveArchive() {
+  try {
+    localStorage.setItem(saveKey, JSON.stringify(discovered));
+  } catch {
+    return;
+  }
+}
+
+function icon(index) {
+  return `<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.15" aria-hidden="true">${diagrams[index]}</svg>`;
+}
+
+function fingerprint() {
+  const ridges = Array.from({length:15}, (_, index) => {
+    const radius = 16 + index * 6;
+    const low = 186 + index * 2.5;
+    return `<path d="M ${181-radius} ${low} C ${161-radius} ${125-index*4}, ${188-radius/2} ${158-radius}, 207 ${158-radius} C ${228+radius*.63} ${151-radius}, ${214+radius} ${143+index*2}, ${224+radius*.57} ${low+19} C ${224+radius*.46} ${low+34}, ${198+radius*.2} ${low+34}, ${198+radius*.13} ${low+17}"/>`;
+  }).join("");
+  return `<svg viewBox="0 0 400 320" fill="none" aria-hidden="true">
+    <defs><radialGradient id="halo"><stop stop-color="#bd8745" stop-opacity=".24"/><stop offset="1" stop-color="#bd8745" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="203" cy="153" r="150" fill="url(#halo)"/>
+    <g stroke="currentColor" opacity=".32"><circle cx="202" cy="153" r="126"/><circle cx="202" cy="153" r="115" stroke-dasharray="2 5"/><path d="M35 153h47m240 0h45M202 15v25m0 225v35M57 49h23m-23 0v23m290-23h-23m23 0v23M57 253h23m-23 0v-23m290 23h-23m23 0v-23"/></g>
+    <g transform="rotate(-16 202 153)" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" opacity=".8">${ridges}</g>
+    <g fill="currentColor" font-size="10" font-family="monospace" letter-spacing="2"><text x="58" y="36">FIG. 01</text><text x="301" y="273">TRACE</text></g>
+  </svg>`;
+}
+
+function filesScreen() {
+  return `<section class="hero">
+    <div><div class="label">The forensic genetics collection</div>
+    <h1 tabindex="-1">The Cold Case<br><em>Archives</em></h1>
+    <p>Four investigations. Three decisions in each. Follow the DNA and decide how much the evidence can prove.</p>
+    <div class="hero-notes"><span>04 case files</span><span>16 endings</span><span>≈ 3 min per case</span></div></div>
+    <figure class="hero-art">${fingerprint()}<figcaption class="art-caption">Evidence plate · Fingerprint study</figcaption></figure>
+  </section>
+  <div class="section-head"><div><span class="label">Investigation index</span><h2>Select a case file</h2></div>${run ? '<button class="mini" data-action="resume">Resume current case</button>' : '<span class="case-meta">Play in any order</span>'}</div>
+  <div class="case-grid">${cases.map((file, index) => `<button class="case-card" data-action="open" data-index="${index}">
+    <div class="card-top"><span class="label">File ${stamps[index]}</span>${icon(index)}</div>
+    <h3>${file.title}</h3><span class="case-meta">${file.method}</span><span class="case-link">Open dossier →</span>
+  </button>`).join("")}</div>`;
+}
+
+function desk(file, index, step, content) {
+  const phase = ["Briefing","Decision 1 of 3","Decision 2 of 3","Decision 3 of 3","Outcome"][step];
+  return `<div class="desk"><div class="desk-head">
+    <span class="chapter">File ${stamps[index]} &nbsp; / &nbsp; ${phase}</span>
+    <ol class="steps" aria-label="${phase}">${Array.from({length:5}, (_, position) => `<li aria-hidden="true" class="${position < step ? "past" : position === step ? "current" : ""}"></li>`).join("")}</ol>
+    <span class="case-meta">${file.region}</span></div>
+    <article class="sheet">${content}</article></div>`;
+}
+
+function introScreen(file) {
+  return desk(file, run.index, 0, `<span class="label">Inspired by the ${file.model}</span>
+    <h1 tabindex="-1">${file.title}</h1><p>${file.intro}</p>
+    <h2>People in the file</h2>
+    <div class="cast">${file.cast.map(([name, role]) => `<div><strong>${name}</strong><span>${role}</span></div>`).join("")}</div>
+    <p class="muted">Fictional briefing and dialogue. The historical record appears in the debrief.</p>
+    <div class="actions"><button class="primary" id="start-btn" data-action="begin">Begin investigation →</button><button data-action="files">Case files</button></div>`);
+}
+
+function sceneScreen(file) {
+  const [title, speaker, quote, evidence, choices] = file.scenes[run.node];
+  return desk(file, run.index, run.trail.length + 1, `<span class="label">Dramatised investigation · ${file.title}</span>
+    <h1 tabindex="-1">${title}</h1>
+    <figure class="quote"><figcaption class="label">${speaker}</figcaption><blockquote>“${quote}”</blockquote></figure>
+    <p class="evidence"><strong>Evidence on the desk</strong>${evidence}</p>
+    <p class="decision">What do you do?</p><div class="choices">${choices.map(([label], index) => `<button class="choice" data-action="choose" data-index="${index}"><kbd aria-hidden="true">${index+1}</kbd><span>${label}</span></button>`).join("")}</div>
+    <div class="actions"><button class="mini" data-action="rewind">↶ Rewind one scene</button><button class="mini" data-action="restart">Restart case</button></div>`);
+}
+
+function endingScreen(index, outcome, archived = false) {
+  const file = cases[index];
+  const [title, description] = file.endings[outcome];
+  return desk(file, index, 4, `<span class="badge ${outcome === 0 ? "good" : "alt"}">${outcome === 0 ? "History-aligned dramatisation" : "Fictional alternative outcome"}</span>
+    <h1 tabindex="-1">${title}</h1><p>${description}</p>
+    <section class="debrief"><h2>The forensic principle</h2><p>${file.science}</p>
+    <h2>What actually happened</h2><p>${file.history}</p>
+    <details><summary>Source notes <span class="muted">(links require internet)</span></summary>
+    <ul>${file.sources.map(([label, url]) => `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a></li>`).join("")}</ul></details>
+    <p class="evidence"><strong>Discuss</strong>${file.prompt}</p></section>
+    ${archived ? "" : `<details><summary>Review your three decisions</summary><ol class="trace">${run.trail.map(item => `<li>${item.choice}</li>`).join("")}</ol></details>`}
+    <div class="actions">${archived
+      ? `<button class="primary" data-action="archive">Back to archive</button><button data-action="open" data-index="${index}">Play this case</button>`
+      : `<button class="primary" data-action="${index < cases.length - 1 ? "open" : "files"}" data-index="${index+1}">${index < cases.length - 1 ? "Next case →" : "Case files →"}</button>
+      <button data-action="rewind">↶ Try the other final choice</button><button data-action="restart">Restart case</button><button data-action="archive">View archive</button>`}</div>`);
+}
+
+function archiveScreen() {
+  const total = Object.keys(discovered).length;
+  return `<div class="desk"><article class="sheet"><span class="label">Outcome registry · ${total} / 16 discovered</span>
+    <h1 tabindex="-1">The Case Archive</h1><p class="muted">Play through a case to unseal its ending. Rewind or replay to discover other outcomes.</p>
+    ${cases.map((file, index) => `<section class="archive-group"><span class="label">File ${stamps[index]}</span><h2>${file.title}</h2><div class="archive-grid">
+    ${file.endings.map(([title], outcome) => discovered[`${index}-${outcome}`]
+      ? `<button class="archive-item" data-action="exhibit" data-index="${index}" data-outcome="${outcome}"><span class="label">${stamps[index]}-${outcome+1} · ${outcome === 0 ? "History-aligned" : "Fictional"}</span><span>${title} →</span></button>`
+      : `<div class="archive-item locked"><span class="case-meta">${stamps[index]}-${outcome+1}</span><span>Sealed ending</span></div>`).join("")}</div></section>`).join("")}
+    <div class="actions"><button class="primary" data-action="files">Case files</button><button data-action="reset-archive">Clear discovered endings</button></div></article></div>`;
+}
+
+function playScreen() {
+  const file = cases[run.index];
+  if (run.node === "intro") return introScreen(file);
+  if (run.trail.length === 3) return endingScreen(run.index, Number(run.node));
+  return sceneScreen(file);
+}
+
+function render(focus = true) {
+  document.querySelector("#count").textContent = Object.keys(discovered).length + "/16";
+  document.querySelector("#nav-files").toggleAttribute("aria-current", view === "files");
+  document.querySelector("#nav-archive").toggleAttribute("aria-current", view === "archive" || view === "exhibit");
+  for (const current of document.querySelectorAll("[aria-current]")) current.setAttribute("aria-current", "page");
+  const screens = {files: filesScreen, archive: archiveScreen, play: playScreen, exhibit: () => endingScreen(exhibit.index, exhibit.outcome, true)};
+  main.innerHTML = screens[view]();
+  if (focus) {
+    window.scrollTo(0, 0);
+    main.querySelector("h1").focus({preventScroll:true});
+  }
+}
+
+function openCase(index) {
+  run = {index, node:"intro", trail:[]};
+  view = "play";
+}
+
+function choose(index) {
+  const scene = cases[run.index].scenes[run.node];
+  if (!scene) return;
+  const [choice, next] = scene[4][index];
+  run.trail.push({node:run.node, choice});
+  run.node = next;
+  if (run.trail.length === 3) {
+    discovered[`${run.index}-${next}`] = true;
+    saveArchive();
+  }
+}
+
+function rewind() {
+  if (run.node !== "intro") run.node = run.trail.pop()?.node ?? "intro";
+}
+
+async function toggleFullscreen() {
+  const status = document.querySelector("#present-status");
+  try {
+    if (document.fullscreenElement) await document.exitFullscreen();
+    else await document.documentElement.requestFullscreen();
+    status.textContent = "";
+  } catch {
+    status.textContent = "Use your browser’s full-screen control on this device.";
+  }
+}
+
+document.addEventListener("fullscreenchange", () => {
+  document.querySelector("#full-toggle").textContent = document.fullscreenElement ? "Exit full screen" : "Full screen";
+});
+
+document.addEventListener("click", event => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+  const index = Number(button.dataset.index);
+  switch (button.dataset.action) {
+    case "files": view = "files"; break;
+    case "archive": view = "archive"; break;
+    case "open": openCase(index); break;
+    case "resume": view = "play"; break;
+    case "begin": run.node = "start"; break;
+    case "choose": choose(index); break;
+    case "rewind": rewind(); break;
+    case "restart": openCase(run.index); break;
+    case "exhibit": exhibit = {index, outcome:Number(button.dataset.outcome)}; view = "exhibit"; break;
+    case "present": presenter.showModal(); return;
+    case "projector": {
+      const enabled = document.body.classList.toggle("presentation");
+      button.setAttribute("aria-pressed", String(enabled));
+      return;
+    }
+    case "fullscreen": void toggleFullscreen(); return;
+    case "reset-all":
+    case "reset-archive":
+      resetTarget = button.dataset.action;
+      confirmBox.returnValue = "cancel";
+      document.querySelector("#confirm-title").textContent = resetTarget === "reset-all" ? "Reset all progress?" : "Reset archive?";
+      document.querySelector("#confirm-text").textContent = resetTarget === "reset-all"
+        ? "The active investigation and all discovered endings will be cleared."
+        : "All discovered endings will be cleared. You can unlock them again by playing.";
+      confirmBox.showModal();
+      return;
+    default: return;
+  }
+  render();
+});
+
+confirmBox.addEventListener("close", () => {
+  if (confirmBox.returnValue !== "confirm") return;
+  discovered = {};
+  saveArchive();
+  if (resetTarget === "reset-all") {
+    run = null;
+    presenter.close();
+    view = "files";
+  }
+  render();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.repeat || event.altKey || event.ctrlKey || event.metaKey || view !== "play" || presenter.open || confirmBox.open) return;
+  if ((event.key === "1" || event.key === "2") && cases[run.index].scenes[run.node]) {
+    event.preventDefault();
+    choose(Number(event.key) - 1);
+    render();
+  } else if (event.key.toLowerCase() === "b" && run.node !== "intro") {
+    event.preventDefault();
+    rewind();
+    render();
+  }
+});
+
+window.render_game_to_text = () => JSON.stringify({
+  view, run, archiveCount:Object.keys(discovered).length,
+  heading:main.querySelector("h1")?.textContent,
+  choices:[...main.querySelectorAll(".choice span")].map(choice => choice.textContent)
+});
+
+render(false);
+</script>
+</body>
+</html>
